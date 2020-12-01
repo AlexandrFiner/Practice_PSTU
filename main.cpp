@@ -14,6 +14,21 @@ int n;
 // Массив
 int a[ARRAY_SIZE];
 
+// Сортировка простым выбором
+void simpleSort(int *num, int size) {
+    int min = 0, temp = 0;
+    for (int i = 0; i < size-1; i++) {
+        min = i;
+        for (int j = i+1; j < size; j++)
+        {
+            if (num[j] < num[min])
+                min = j;
+        }
+        temp = num[i];
+        num[i] = num[min];
+        num[min] = temp;
+    }
+}
 
 int main() {
     int min = MAX_INT+1; // Минимальное число
@@ -90,12 +105,49 @@ int main() {
     cout << endl;
 
     // Поиск указанных в массиве элементов
-    // Среднее арифметическое
-    int average;
+    // Среднее арифметическое (9, 10)
+    int average = 0;
+    int counter = 0;
+    for(int i = 0; i < n; i++) {
+        average += a[i];
+    }
+    k = -1;
+    average /= n;
+    for(int i = 0; i < n; i++) {
+        if (average == a[i]) {
+            k = i;
+            break;
+        }
+        else
+            counter++;
+    }
+    if(k >= 0)
+        cout << "Success: Checks(" << counter << "), element " << k << endl;
+    else
+        cout << "Fail: Checks(" << counter << ")" << endl;
+    cout << endl;
 
-    // Сортировка массива
+    // Сортировка массива (11, 12)
+    simpleSort(a, n);
+    for(int i = 0; i < n; i++) {
+        cout << i << ") " << a[i] << endl;
+    }
+    cout << endl;
 
-    // Поиск
+    // Поиск (13, 14)
+    counter = 0, k = -1;
+    for(int i = 0; i < n; i++) {
+        if (average == a[i]) {
+            k = i;
+            break;
+        }
+        else
+            counter++;
+    }
+    if(k >= 0)
+        cout << "Success: Checks(" << counter << "), element " << k << endl;
+    else
+        cout << "Fail: Checks(" << counter << ")" << endl;
 
     return 0;
 }
