@@ -169,14 +169,14 @@ void print(List* first) {
 }
 
 int main() {
-    setlocale(LC_ALL, "Rus");
+    system("chcp 1251");
 
     // List* list = readFile();
     // return 0;
     List* list = make();
-    saveFile(list);
-    readFile();
-    return 0;
+    // saveFile(list);
+    // readFile();
+    // return 0;
 
     cout << "Актуальный список" << endl;
     print(list);
