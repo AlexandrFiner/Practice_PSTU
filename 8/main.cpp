@@ -27,13 +27,9 @@ List* readFile() {
 
     p = new List;
     if(!feof(fp)) {
-        if(fread(&p->data.title, sizeof(string), 1, fp) != 1) {
-            perror("\nОшибка при открытии файла data.dat");
-            exit(0);
-        }
-        cout << p->data.title;
-        exit(0);
+        fread(&p, sizeof(p), 1, fp);
     }
+    cout << p->data.title << endl;
     cout << "Чтение окончено" << endl;
     return first;
 }
@@ -52,10 +48,13 @@ void saveFile(List* first) {
         rewind(fp);
 
         while (!feof(fp) && p != NULL) {
+            /*
             fwrite(&p->data.title, sizeof(string), 1, fp);
             fwrite(&p->data.lang, sizeof(string), 1, fp);
             fwrite(&p->data.money, sizeof(string), 1, fp);
             fwrite(&p->data.course, sizeof(float), 1, fp);
+            */
+            fwrite(&p, sizeof(*p), 1, fp);
             p = p->next;
         }
         fclose(fp);
@@ -169,14 +168,13 @@ void print(List* first) {
 }
 
 int main() {
-    system("chcp 1251");
-
+    setlocale(LC_ALL, "Russian");
     // List* list = readFile();
     // return 0;
     List* list = make();
-    // saveFile(list);
-    // readFile();
-    // return 0;
+    saveFile(list);
+    readFile();
+    return 0;
 
     cout << "Актуальный список" << endl;
     print(list);
