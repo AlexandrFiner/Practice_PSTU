@@ -7,6 +7,10 @@ using namespace std;
 
 #define FAKE_DATA 14
 
+/*
+ *
+ */
+
 // ФИО
 string name_fake[FAKE_DATA] = {
     "Иванов Иван Иванович",
@@ -76,7 +80,9 @@ Node* make();
 void print(Node* first);
 void searchLinear(Node* first);
 int parseDate(string &input);
-void sort(Node* first);
+
+void searchInString(Node* first); // Основная
+int searchInStringFunc(string st, string ct, int b[256]); // Вспомогательная
 
 int main() {
     srand(time(NULL));
@@ -90,7 +96,7 @@ int main() {
         cout << "1 - Генерация списка (not yet)" << endl;
         cout << "2 - Вывести текущий список" << endl << endl;
         cout << "3 - Линейный поиск" << endl;
-        cout << "4 - Интерполяционный поиск" << endl;
+        cout << "4 - Интерполяционный поиск (WIP)" << endl;
         cout << "5 - Прямой поиск подстроки в строке" << endl;
         cout << endl << endl << "0 - ВЫХОД" << endl;
         cin >> choice;
@@ -105,6 +111,11 @@ int main() {
                 break;
             case 3:
                 searchLinear(list);
+                break;
+            case 4:
+                break;
+            case 5:
+                searchInString(list);
                 break;
         }
     } while (choice != 0);
@@ -198,12 +209,83 @@ void searchLinear(Node* first) {
     }
 }
 
-void search(Node* first) {
+void searchInString(Node* first) {
     if(first == NULL) {
         cout << "Список пуст" << endl;
     } else {
+        system("clear");
+        string search;
+        cout << "Введите дату рождения для поиска" << endl;
+        cin >> search;
 
+
+        unsigned int start_time =  clock(); // начальное время
+        int search_count = 0;
+        int i, b[256];
+
+        int ctl = search.size();
+        for(i = 0; i < 256; i++) {
+            b[i] = ctl; // задаем смещение равное длине шаблона
+        }
+        for(i = ctl - 2; i >= 0; i--) { // корректировка массива
+            if (b[(int) (unsigned) (char) search[i]] == ctl) { // для символов шаблона находим их ячейку в массиве
+                b[(int) (unsigned) (char) search[i]] = ctl - i - 1; // присваиваем необходимое значение
+            }
+        }
+
+        Node* p = first;
+        while (p != NULL) {
+            search_count += 1;
+            if(searchInStringFunc(p->data.birthday, search, b)) {
+                cout << "ФИО: " << p->data.name << " | ";
+                cout << "Дата рождения: " << p->data.birthday << " | ";
+                cout << "Паспорт: " << p->data.pasport << endl;
+            }
+            p = p->next;
+        }
+        unsigned int end_time = clock(); // конечное время
+        unsigned int search_time = end_time - start_time; // искомое время
+
+        cout << endl << "Debug:";
+        cout << endl << "Пройдено сравнений: " << search_count;
+        cout << endl << "Время выполнения функции: " << search_time/1000.0 << " мс." << endl;
+
+        int out = 1;
+        while(out != 0) {
+            cout << endl << "0 - назад" << endl;
+            cin >> out;
+        }
+        system("clear");
     }
+}
+
+int searchInStringFunc(string st, string ct, int b[256]) {
+    /* Работаем со строкой поиска */
+    int stl, ctl;
+    stl = st.size();
+    ctl = ct.size();
+    int i, p;
+
+    if(stl != 0 && ctl != 0 && stl >= ctl) { // проверка на сущ строки и шаблона
+        p = ctl - 1; // позиция последнего элемента шаблона относительно строки
+
+        while(p < stl) { // пока строка не все
+            if(ct[ctl - 1] != st[p]) { // если символы не совпали
+                p += b[(int)(unsigned)(char)st[p]];
+            } else {
+                for(i = ctl - 1; i >= 0; i--) { // Проверяем каждый элемент
+                    if(ct[i] != st[p - ctl + i + 1]) {
+                        p += b[(int)(unsigned)(char)st[p]];
+                        break;
+                    } else if(i == 0) {
+                        return p - ctl + 1;
+                    }
+                }
+            }
+        }
+    }
+
+    return -1;
 }
 
 void sort(Node* first) {
@@ -216,11 +298,6 @@ void sort(Node* first) {
             p = p->next;
         }
     }
-}
-
-void sort(list **first)
-{
-
 }
 
 int parseDate(string &input) {
