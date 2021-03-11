@@ -14,6 +14,54 @@ struct List {
     List* next; // Указатель на следующий элемент
 };
 
+// Чтение и сохранение
+List* readFile();
+void saveFile(List* first);
+
+// Создание
+List* make();
+
+// Удаление и добавление
+void del(List* &first);
+void add(List* &first, int count);
+
+// Вывод
+void print(List* first);
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    // List* list = readFile();
+    // return 0;
+    List* list = make();
+    cout << "Сформирован файл data.dat" << endl;
+    saveFile(list);
+
+    cout << "Содержание файла" << endl;
+    List* list_file = readFile();
+    print(list_file);
+
+    cout << "Актуальный список" << endl;
+    print(list);
+    cout << endl;
+
+    del(list);
+
+    cout << "Актуальный список" << endl;
+    print(list);
+    cout << endl;
+
+    add(list, 2);
+
+    cout << "Актуальный список" << endl;
+    print(list);
+    cout << endl;
+
+    cout << "Файл data.dat обновлен" << endl;
+    saveFile(list);
+
+    return 0;
+}
+
 List* readFile() {
     List* first, *p;
     first = NULL; // Пока нет элементов, указываем на нул
@@ -158,38 +206,4 @@ void print(List* first) {
             p = p->next;
         }
     }
-}
-
-int main() {
-    setlocale(LC_ALL, "Russian");
-    // List* list = readFile();
-    // return 0;
-    List* list = make();
-    cout << "Сформирован файл data.dat" << endl;
-    saveFile(list);
-
-    cout << "Содержание файла" << endl;
-    List* list_file = readFile();
-    print(list_file);
-
-    cout << "Актуальный список" << endl;
-    print(list);
-    cout << endl;
-
-    del(list);
-
-    cout << "Актуальный список" << endl;
-    print(list);
-    cout << endl;
-
-    add(list, 2);
-
-    cout << "Актуальный список" << endl;
-    print(list);
-    cout << endl;
-
-    cout << "Файл data.dat обновлен" << endl;
-    saveFile(list);
-
-    return 0;
 }

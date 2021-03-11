@@ -14,8 +14,36 @@ struct List_2 {
     List_2* next;
 };
 
-queue<int> quInt; // пустая очередь int
-queue<char> quChar; // пустая очередь char
+// Формируем
+List* makeInt();
+List_2* makeChar();
+
+// Выводим
+void print(List* first);
+void print(List_2* first);
+
+// Удаляем и добавляем
+void del(List* first);
+void add(List_2* &first);
+
+int main() {
+    setlocale(LC_ALL, "Rus");
+    srand(time(NULL));
+
+    cout << "-- Работа со списками -- " << endl;
+
+    List* list = makeInt();
+    print(list);
+    del(list);
+    print(list);
+
+    cout << endl;
+
+    List_2* list2 = makeChar();
+    print(list2);
+    add(list2);
+    print(list2);
+}
 
 List* makeInt() {
     List* first, *p;
@@ -64,15 +92,6 @@ List_2* makeChar() {
     return first;
 }
 
-queue<int> makeQueueInt() {
-    queue<int> qu;
-
-    for(int i = 1; i <= 10; i++) {
-        qu.push(rand() % 100);
-    }
-    return qu;
-}
-
 void print(List* first) {
     if(first == NULL) {
         cout << "Список пуст" << endl;
@@ -97,21 +116,6 @@ void print(List_2* first) {
         }
         cout << endl;
     }
-}
-
-void print(queue<int> qu) {
-    int p = qu.size();  // размер
-    char arr[32];
-
-    for(int i = 0; i < p; i++) {
-        arr[i] = qu.front();
-        cout << qu.front() << " ";
-        qu.pop();
-    }
-    for(int i = 0; i < p; i++)
-        qu.push(arr[i]);
-
-    cout << endl;
 }
 
 void del(List* first) {
@@ -143,25 +147,6 @@ void del(List* first) {
     }
 }
 
-void del(queue<int> &qu) {
-    cout << "Удаляем последнее четное" << endl;
-
-    int p = qu.size();  // размер
-    char arr[32];
-
-    for(int i = 0; i < p; i++) {
-        if(qu.top() % 2 == 0) {
-            qu.pop();
-            break;
-        } else {
-            arr[i] = qu.top();
-            qu.pop();
-        }
-    }
-    for(int i = 0; i < p; i++)
-        qu.push(arr[i]);
-}
-
 void add(List_2* &first) {
     if(first == NULL) {
         cout << "Список пуст" << endl;
@@ -187,30 +172,4 @@ void add(List_2* &first) {
             }
         }
     }
-}
-
-int main() {
-    setlocale(LC_ALL, "Rus");
-    srand(time(NULL));
-
-    cout << "-- Работа со списками -- " << endl;
-
-    List* list = makeInt();
-    print(list);
-    del(list);
-    print(list);
-
-    cout << endl;
-
-    List_2* list2 = makeChar();
-    print(list2);
-    add(list2);
-    print(list2);
-
-
-    cout << "-- Работа со стеком и очередью -- " << endl;
-    quInt = makeQueueInt();
-    print(quInt);
-    del(quInt);
-    print(quInt);
 }
