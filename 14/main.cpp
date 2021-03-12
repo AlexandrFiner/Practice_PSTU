@@ -325,6 +325,14 @@ void knut(Node* first) {
             }
             p = p->next;
         }
+
+
+        int out = 1;
+        while(out != 0) {
+            cout << endl << "0 - назад" << endl;
+            cin >> out;
+        }
+        system("clear");
     }
 }
 
@@ -335,32 +343,35 @@ bool knut_morris_pratt(string str, string obr)
     ds = str.size();
     dk = obr.size();
 
-    if (ds == 0)        cout << "Неверно задана строка\n";
-    else if (dk == 0)   cout << "Неверно задана подстрока\n";
+    if (ds == 0) {
+        cout << "Неверно задана строка\n";
+        return false;
+    }
+    else if (dk == 0) {
+        cout << "Неверно задана подстрока\n";
+        return false;
+    }
     else {
         j = 0;
         k = -1;
     }
 
-    int* pf = new int[1000];
+    int* pf = new int[1000]; // Максимальная длина строки
     pf[0] = -1;
     while (j < dk - 1) {
         while (k >= 0 && obr[j] != obr[k])
             k = pf[k];
-        j++;
-        k++;
-        if (obr[j] == obr[k])
-            pf[j] = pf[k];
-        else
-            pf[j] = k;
+
+        j++; k++;
+        if(obr[j] == obr[k]) pf[j] = pf[k];
+        else pf[j] = k;
     }
-    i = 0;
-    j = 0;
+    i = 0; j = 0;
     while (j < dk && i < ds) {
         while (j >= 0 && str[i] != obr[j])
             j = pf[j];
-        i++;
-        j++;
+
+        i++; j++;
     }
     delete[] pf;
     if (j == dk)
