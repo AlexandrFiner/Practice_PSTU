@@ -13,54 +13,54 @@ using namespace std;
 
 // ФИО
 string name_fake[FAKE_DATA] = {
-    "Иванов Иван Иванович",
-    "Петров Петр Петрович",
-    "Александров Александр Александрович",
-    "Иванов Петр Иванович",
-    "Александров Петр Александрович",
-    "Петров Иван Петрович",
-    "Александров Иван Александрович",
-    "Иванов Александр Иванович",
-    "Петров Александр Петрович",
-    "Иванов Петр Александрович",
-    "Петров Александр Иванович",
-    "Александров Петр Александрович",
-    "Петров Иван Александрович",
-    "Иванов Александр Петрович"
+        "Иванов Иван Иванович",
+        "Петров Петр Петрович",
+        "Александров Александр Александрович",
+        "Иванов Петр Иванович",
+        "Александров Петр Александрович",
+        "Петров Иван Петрович",
+        "Александров Иван Александрович",
+        "Иванов Александр Иванович",
+        "Петров Александр Петрович",
+        "Иванов Петр Александрович",
+        "Петров Александр Иванович",
+        "Александров Петр Александрович",
+        "Петров Иван Александрович",
+        "Иванов Александр Петрович"
 };
 
 string birthday_fake[FAKE_DATA] = {
-    "10.10.2001",
-    "20.02.2002",
-    "20.02.2003",
-    "20.02.2004",
-    "20.02.2005",
-    "20.02.2006",
-    "20.02.2007",
-    "20.02.2008",
-    "20.02.2009",
-    "20.02.2010",
-    "20.02.2011",
-    "20.02.2012",
-    "20.02.2013",
-    "20.02.2014"
+        "10.10.2001",
+        "20.02.2002",
+        "20.02.2003",
+        "20.02.2004",
+        "20.02.2005",
+        "20.02.2006",
+        "20.02.2007",
+        "20.02.2008",
+        "20.02.2009",
+        "20.02.2010",
+        "20.02.2011",
+        "20.02.2012",
+        "20.02.2013",
+        "20.02.2014"
 };
 
 string pasport_fake[FAKE_DATA] = {
-    "5715 403111",
-    "5716 401022",
-    "5717 401023",
-    "5718 401024",
-    "5719 401025",
-    "5720 401026",
-    "5721 401027",
-    "5722 401028",
-    "5723 401029",
-    "5724 401010",
-    "5725 401011",
-    "5726 401012",
-    "5727 401013",
-    "5728 401014"
+        "5715 403111",
+        "5716 401022",
+        "5717 401023",
+        "5718 401024",
+        "5719 401025",
+        "5720 401026",
+        "5721 401027",
+        "5722 401028",
+        "5723 401029",
+        "5724 401010",
+        "5725 401011",
+        "5726 401012",
+        "5727 401013",
+        "5728 401014"
 };
 
 struct State {
@@ -82,7 +82,9 @@ void searchLinear(Node* first);
 int parseDate(string &input);
 
 void searchInString(Node* first); // Основная
-int searchInStringFunc(string st, string ct, int b[256]); // Вспомогательная
+
+int searchInterpol(Node* first);
+void insertionSort(struct Node **head_ref);
 
 int main() {
     srand(time(NULL));
@@ -113,6 +115,9 @@ int main() {
                 searchLinear(list);
                 break;
             case 4:
+                // Сортировка списка
+                insertionSort(&list);
+                searchInterpol(list);
                 break;
             case 5:
                 searchInString(list);
@@ -209,6 +214,7 @@ void searchLinear(Node* first) {
     }
 }
 
+int searchInStringFunc(string st, string ct, int b[256]); // Вспомогательная
 void searchInString(Node* first) {
     if(first == NULL) {
         cout << "Список пуст" << endl;
@@ -311,4 +317,139 @@ int parseDate(string &input) {
         return 100 * year + 10 * month + day;
     }
     return 0;
+}
+
+/*
+ * Credits:
+ * https://www.geeksforgeeks.org/insertion-sort-for-singly-linked-list/
+ */
+
+
+void sortedInsert(struct Node**, struct Node*);
+void insertionSort(struct Node **head_ref)
+{
+    struct Node *sorted = NULL;
+    struct Node *current = *head_ref;
+    while (current != NULL)
+    {
+        struct Node *next = current->next;
+        sortedInsert(&sorted, current);
+        current = next;
+    }
+    *head_ref = sorted;
+}
+
+void sortedInsert(struct Node** head_ref, struct Node* new_node)
+{
+    struct Node* current;
+    if (*head_ref == NULL || (*head_ref)->data.birthday_weight >= new_node->data.birthday_weight)
+    {
+        new_node->next = *head_ref;
+        *head_ref = new_node;
+    }
+    else
+    {
+        current = *head_ref;
+        while (current->next!=NULL &&
+               current->next->data.birthday_weight < new_node->data.birthday_weight)
+        {
+            current = current->next;
+        }
+        new_node->next = current->next;
+        current->next = new_node;
+    }
+}
+
+int searchInterpol(Node* first) {
+    system("clear");
+
+    cout << "Введите дату рождения для поиска" << endl;
+    cout << "Формат: дд.мм.гггг" << endl;
+    string searchStr;
+    cin >> searchStr;
+    int searchInt;
+    searchInt = parseDate(searchStr);
+
+    // Я пытался посчитать через sizeof, но не очень получилось :(
+    int counter = 0;
+    Node* p = first;
+    while(p != NULL) {
+        counter++;
+        p = p->next;
+    }
+
+    int lo = 0, hi = (counter - 1);
+
+    cout << "END POINT:" << hi << endl;
+
+    cout << searchInt << endl;
+
+    cout << (lo <= hi) << endl;
+    cout << (searchInt >= first[lo].data.birthday_weight) << endl;
+    cout << (searchInt <= first[hi].data.birthday_weight) << endl;
+
+    while (lo <= hi && searchInt >= first[lo].data.birthday_weight && searchInt <= first[hi].data.birthday_weight) {
+        if(lo == hi) {
+            if(first[lo].data.birthday_weight == searchInt) {
+                system("clear");
+                cout << "Поиск успешно окончен. Найден результат: " << endl << endl;
+                cout << "ФИО: " << first[lo].data.name << " | ";
+                cout << "Дата рождения: " << first[lo].data.birthday << " | ";
+                cout << "Паспорт: " << first[lo].data.pasport << endl;
+
+                int out = 1;
+                while(out != 0) {
+                    cout << endl << "0 - назад" << endl;
+                    cin >> out;
+                }
+                system("clear");
+                return lo;
+            }
+
+            system("clear");
+            cout << "Поиск окончен. По вашему запросу ничего не найдено. " << endl;
+            cout << "DEBUG:: End point = 1 " << endl << endl;
+            int out = 1;
+            while(out != 0) {
+                cout << endl << "0 - назад" << endl;
+                cin >> out;
+            }
+            system("clear");
+            return -1;
+        }
+
+        int pos = lo + (((double)(hi - lo) /
+                         (first[hi].data.birthday_weight - first[lo].data.birthday_weight)) * (searchInt - first[lo].data.birthday_weight));
+
+        if(first[pos].data.birthday_weight == searchInt) {
+            system("clear");
+            cout << "Поиск успешно окончен. Найден результат: " << endl << endl;
+            cout << "ФИО: " << first[pos].data.name << " | ";
+            cout << "Дата рождения: " << first[pos].data.birthday << " | ";
+            cout << "Паспорт: " << first[pos].data.pasport << endl;
+
+            int out = 1;
+            while(out != 0) {
+                cout << endl << "0 - назад" << endl;
+                cin >> out;
+            }
+            system("clear");
+            return pos;
+        }
+
+        if(first[pos].data.birthday_weight < searchInt)
+            lo = pos + 1;
+        else
+            hi = pos - 1;
+    }
+
+    cout << "Поиск окончен. По вашему запросу ничего не найдено. " << endl;
+    cout << "DEBUG:: End point = 2 " << endl << endl;
+    int out = 1;
+    while(out != 0) {
+        cout << endl << "0 - назад" << endl;
+        cin >> out;
+    }
+    system("clear");
+    return -1;
 }
