@@ -306,7 +306,6 @@ int searchInStringFunc(string st, string ct, int b[256]) {
     return -1;
 }
 
-
 bool knut_morris_pratt(string str, string obr);
 void knut(Node* first) {
     if(first == NULL) {
