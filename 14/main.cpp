@@ -80,6 +80,9 @@ Node* make();
 void print(Node* first);
 void insertionSort(struct Node **head_ref);
 
+void searchInString(Node* first); // Бойер
+void knut(Node* first); // Кнут
+
 int main() {
     srand(time(NULL));
     setlocale(LC_ALL, "Rus");
@@ -91,6 +94,8 @@ int main() {
         cout << "Main Menu" << endl;
         cout << "1 - Генерация списка (not yet)" << endl;
         cout << "2 - Вывести текущий список" << endl << endl;
+        cout << "3 - Метод Бойера-Мура" << endl;
+        cout << "4 - Метод Кнута-Морриса-Пратта" << endl;
         cout << endl << endl << "0 - ВЫХОД" << endl;
         cin >> choice;
         system("clear");
@@ -101,6 +106,14 @@ int main() {
                 break;
             case 2:
                 print(list);
+                break;
+            case 3:
+                // Подстрока в строке
+                searchInString(list);
+                break;
+            case 4:
+                //
+                knut(list);
                 break;
         }
     } while (choice != 0);
@@ -209,4 +222,148 @@ void sortedInsert(struct Node** head_ref, struct Node* new_node)
         new_node->next = current->next;
         current->next = new_node;
     }
+}
+
+
+/* Бойера */
+int searchInStringFunc(string st, string ct, int b[256]); // Вспомогательная
+void searchInString(Node* first) {
+    if(first == NULL) {
+        cout << "Список пуст" << endl;
+    } else {
+        system("clear");
+        string search;
+        cout << "Введите дату рождения для поиска" << endl;
+        cin >> search;
+
+
+        unsigned int start_time =  clock(); // начальное время
+        int search_count = 0;
+        int i, b[256];
+
+        int ctl = search.size();
+        for(i = 0; i < 256; i++) {
+            b[i] = ctl; // задаем смещение равное длине шаблона
+        }
+        for(i = ctl - 2; i >= 0; i--) { // корректировка массива
+            if (b[(int) (unsigned) (char) search[i]] == ctl) { // для символов шаблона находим их ячейку в массиве
+                b[(int) (unsigned) (char) search[i]] = ctl - i - 1; // присваиваем необходимое значение
+            }
+        }
+
+        Node* p = first;
+        while (p != NULL) {
+            search_count += 1;
+            if(searchInStringFunc(p->data.birthday, search, b)) {
+                cout << "ФИО: " << p->data.name << " | ";
+                cout << "Дата рождения: " << p->data.birthday << " | ";
+                cout << "Паспорт: " << p->data.pasport << endl;
+            }
+            p = p->next;
+        }
+        unsigned int end_time = clock(); // конечное время
+        unsigned int search_time = end_time - start_time; // искомое время
+
+        cout << endl << "Debug:";
+        cout << endl << "Пройдено сравнений: " << search_count;
+        cout << endl << "Время выполнения функции: " << search_time/1000.0 << " мс." << endl;
+
+        int out = 1;
+        while(out != 0) {
+            cout << endl << "0 - назад" << endl;
+            cin >> out;
+        }
+        system("clear");
+    }
+}
+
+int searchInStringFunc(string st, string ct, int b[256]) {
+    /* Работаем со строкой поиска */
+    int stl, ctl;
+    stl = st.size();
+    ctl = ct.size();
+    int i, p;
+
+    if(stl != 0 && ctl != 0 && stl >= ctl) { // проверка на сущ строки и шаблона
+        p = ctl - 1; // позиция последнего элемента шаблона относительно строки
+
+        while(p < stl) { // пока строка не все
+            if(ct[ctl - 1] != st[p]) { // если символы не совпали
+                p += b[(int)(unsigned)(char)st[p]];
+            } else {
+                for(i = ctl - 1; i >= 0; i--) { // Проверяем каждый элемент
+                    if(ct[i] != st[p - ctl + i + 1]) {
+                        p += b[(int)(unsigned)(char)st[p]];
+                        break;
+                    } else if(i == 0) {
+                        return p - ctl + 1;
+                    }
+                }
+            }
+        }
+    }
+
+    return -1;
+}
+
+bool knut_morris_pratt(string str, string obr);
+void knut(Node* first) {
+    if(first == NULL) {
+        cout << "Список пуст" << endl;
+    } else {
+        system("clear");
+        string search;
+        cout << "Введите дату рождения для поиска" << endl;
+        cin >> search;
+
+        Node* p = first;
+        while (p != NULL) {
+            if(knut_morris_pratt(p->data.birthday, search)) {
+                cout << "ФИО: " << p->data.name << " | ";
+                cout << "Дата рождения: " << p->data.birthday << " | ";
+                cout << "Паспорт: " << p->data.pasport << endl;
+            }
+            p = p->next;
+        }
+    }
+}
+
+bool knut_morris_pratt(string str, string obr)
+{
+    int ds, dk,i,j,k;
+    bool res = 0;
+    ds = str.size();
+    dk = obr.size();
+
+    if (ds == 0)        cout << "Неверно задана строка\n";
+    else if (dk == 0)   cout << "Неверно задана подстрока\n";
+    else {
+        j = 0;
+        k = -1;
+    }
+
+    int* pf = new int[1000];
+    pf[0] = -1;
+    while (j < dk - 1) {
+        while (k >= 0 && obr[j] != obr[k])
+            k = pf[k];
+        j++;
+        k++;
+        if (obr[j] == obr[k])
+            pf[j] = pf[k];
+        else
+            pf[j] = k;
+    }
+    i = 0;
+    j = 0;
+    while (j < dk && i < ds) {
+        while (j >= 0 && str[i] != obr[j])
+            j = pf[j];
+        i++;
+        j++;
+    }
+    delete[] pf;
+    if (j == dk)
+        res = 1;
+    return res;
 }
