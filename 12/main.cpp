@@ -294,18 +294,6 @@ int searchInStringFunc(string st, string ct, int b[256]) {
     return -1;
 }
 
-void sort(Node* first) {
-    if(first == NULL) {
-        cout << "Список пуст" << endl;
-    } else {
-        Node* p = first;
-
-        while(p != NULL) {
-            p = p->next;
-        }
-    }
-}
-
 int parseDate(string &input) {
     int day;
     int month;
