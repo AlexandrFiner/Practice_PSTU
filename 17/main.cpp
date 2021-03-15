@@ -73,7 +73,7 @@ int main() {
     setlocale(LC_ALL, "Rus");
 
     User* users = make(RND_CNT);
-    print(users, RND_CNT);
+    //print(users, RND_CNT);
 }
 
 int parseDate(string &input);
