@@ -98,7 +98,7 @@ int main() {
         cout << "1 - Генерация списка (not yet)" << endl;
         cout << "2 - Вывести текущий список" << endl << endl;
         cout << "3 - Линейный поиск" << endl;
-        cout << "4 - Интерполяционный поиск (WIP)" << endl;
+        cout << "4 - Интерполяционный поиск" << endl;
         cout << "5 - Прямой поиск подстроки в строке" << endl;
         cout << endl << endl << "0 - ВЫХОД" << endl;
         cin >> choice;
@@ -358,6 +358,8 @@ int searchInterpol(Node* first) {
     int searchInt;
     searchInt = parseDate(searchStr);
 
+
+
     // Я пытался посчитать через sizeof, но не очень получилось :(
     int counter = 0;
     Node* p = first;
@@ -366,24 +368,30 @@ int searchInterpol(Node* first) {
         p = p->next;
     }
 
+    State* arrData = new State[counter];
+
+    p = first;
+    counter = 0;
+    while(p != NULL) {
+        arrData[counter].name = p->data.name;
+        arrData[counter].birthday = p->data.birthday;
+        arrData[counter].birthday_weight = p->data.birthday_weight;
+        arrData[counter].pasport = p->data.pasport;
+
+        counter++;
+        p = p->next;
+    }
+
     int lo = 0, hi = (counter - 1);
 
-    cout << "END POINT:" << hi << endl;
-
-    cout << searchInt << endl;
-
-    cout << (lo <= hi) << endl;
-    cout << (searchInt >= first[lo].data.birthday_weight) << endl;
-    cout << (searchInt <= first[hi].data.birthday_weight) << endl;
-
-    while (lo <= hi && searchInt >= first[lo].data.birthday_weight && searchInt <= first[hi].data.birthday_weight) {
+    while (lo <= hi && searchInt >= arrData[lo].birthday_weight && searchInt <= arrData[hi].birthday_weight) {
         if(lo == hi) {
-            if(first[lo].data.birthday_weight == searchInt) {
+            if(arrData[lo].birthday_weight == searchInt) {
                 system("clear");
                 cout << "Поиск успешно окончен. Найден результат: " << endl << endl;
-                cout << "ФИО: " << first[lo].data.name << " | ";
-                cout << "Дата рождения: " << first[lo].data.birthday << " | ";
-                cout << "Паспорт: " << first[lo].data.pasport << endl;
+                cout << "ФИО: " << arrData[lo].name << " | ";
+                cout << "Дата рождения: " << arrData[lo].birthday << " | ";
+                cout << "Паспорт: " << arrData[lo].pasport << endl;
 
                 int out = 1;
                 while(out != 0) {
@@ -407,14 +415,14 @@ int searchInterpol(Node* first) {
         }
 
         int pos = lo + (((double)(hi - lo) /
-                         (first[hi].data.birthday_weight - first[lo].data.birthday_weight)) * (searchInt - first[lo].data.birthday_weight));
+                         (arrData[hi].birthday_weight - arrData[lo].birthday_weight)) * (searchInt - arrData[lo].birthday_weight));
 
-        if(first[pos].data.birthday_weight == searchInt) {
+        if(arrData[pos].birthday_weight == searchInt) {
             system("clear");
             cout << "Поиск успешно окончен. Найден результат: " << endl << endl;
-            cout << "ФИО: " << first[pos].data.name << " | ";
-            cout << "Дата рождения: " << first[pos].data.birthday << " | ";
-            cout << "Паспорт: " << first[pos].data.pasport << endl;
+            cout << "ФИО: " << arrData[pos].name << " | ";
+            cout << "Дата рождения: " << arrData[pos].birthday << " | ";
+            cout << "Паспорт: " << arrData[pos].pasport << endl;
 
             int out = 1;
             while(out != 0) {
@@ -425,14 +433,13 @@ int searchInterpol(Node* first) {
             return pos;
         }
 
-        if(first[pos].data.birthday_weight < searchInt)
+        if(arrData[pos].birthday_weight < searchInt)
             lo = pos + 1;
         else
             hi = pos - 1;
     }
 
     cout << "Поиск окончен. По вашему запросу ничего не найдено. " << endl;
-    cout << "DEBUG:: End point = 2 " << endl << endl;
     int out = 1;
     while(out != 0) {
         cout << endl << "0 - назад" << endl;
