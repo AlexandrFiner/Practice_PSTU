@@ -307,6 +307,10 @@ int parseDate(string &input) {
     return 0;
 }
 
+void addElements() {
+
+}
+
 /*
  * Credits:
  * https://www.geeksforgeeks.org/insertion-sort-for-singly-linked-list/
