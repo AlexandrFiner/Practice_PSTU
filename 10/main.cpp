@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 char** makeArr(int cnt, int len);
 void initialize(char** A, int cnt, int len);
 void print(char** A, int cnt);
@@ -58,13 +59,9 @@ int main()
     /*
      * 6.Удалить динамические массивы с помощью операции delete или библиотечной функции free.
      */
-    /*
-    for(int i = 0; i < sizeof(A); i++) delete A[i];
     delete [] A;
-
-    for(int i = 0; i < sizeof(A_New); i++) delete A_New[i];
     delete [] A_New;
-    */
+
     return 0;
 }
 
