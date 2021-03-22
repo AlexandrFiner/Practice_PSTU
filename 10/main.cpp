@@ -4,7 +4,6 @@
 
 using namespace std;
 
-
 char** makeArr(int cnt, int len);
 void initialize(char** A, int cnt, int len);
 void print(char** A, int cnt);
