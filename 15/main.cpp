@@ -42,7 +42,8 @@ void echoMenuCreate(Node* st, int n) {
     cout << "2. Автоматическое" << endl;
     cin >> type;
     switch (type) {
-        case 0: { createList(st, n); break; }
+        case 1: { createList(st, n); break; }
+        case 2: { createListRandom(st, n); break; }
         default: { createListRandom(st, n); break; }
     }
 }
@@ -78,6 +79,7 @@ void echoMenu(Node* st, int n) {
         cout << "Выбор сортировки:" << endl;
         cout << "1. Сортировка Шелла " << endl;
         cout << "2. Сортировка Хоара" << endl;
+        cout << "3. Вывод" << endl;
         cout << "Введите операцию: ";
         cin >> a;
         switch (a) {
@@ -125,6 +127,10 @@ void echoMenu(Node* st, int n) {
                 if(!out)
                     a = 0;
 #endif
+                break;
+            }
+            case 3: {
+                printList(st, n);
                 break;
             }
         }
@@ -203,4 +209,9 @@ void printList(Node* st, int n) {
     {
         cout << "Озеро: "  << st[i].name << " (" << st[i].weight << ")" << endl;
     }
+
+    int out = 1;
+    cout << endl << "0. Вернутся в меню" << endl;
+    while (out)
+        cin >> out;
 }
