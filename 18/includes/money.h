@@ -38,10 +38,14 @@ public:
     Money&operator=(const Money&);
     Money& operator++();
     Money operator++(int); // Постфиксная операция
+    Money& operator--();
+    Money operator--(int); // Постфиксная операция
     Money operator+(const Money&);
     /// Глобальные функции ввода-вывода
     friend istream& operator>>(istream&in, Money&t);
     friend ostream& operator<<(ostream&out, const Money&t);
+    friend bool operator== (const Money&c1, const Money&c2);
+    friend bool operator!= (const Money&c1, const Money&c2);
 };
 
 Money&Money::operator=(const Money &t) {
@@ -52,6 +56,15 @@ Money&Money::operator=(const Money &t) {
     rub = t.rub;
     penny = t.penny;
     return *this;
+}
+
+bool operator== (const Money &c1, const Money &c2)
+{
+    return (c1.rub == c2.rub && c1.penny== c2.penny);
+}
+
+bool operator!= (const Money &c1, const Money &c2) {
+    return !(c1 == c2);
 }
 
 // ++VALUE
@@ -81,6 +94,29 @@ Money Money::operator+(const Money &t) {
     p.rub = temp/100;
     p.penny = temp%100;
     return p;
+}
+
+// --VALUE
+Money&Money::operator--() {
+    long temp = rub*100+penny;
+    temp--;
+    if(temp < 0)
+        temp = 0;
+    rub = temp/100;
+    penny = temp%100;
+    return *this;
+}
+
+// VALUE--
+Money Money::operator--(int) {
+    long temp = rub*100+penny;
+    temp--;
+    if(temp < 0)
+        temp = 0;
+    Money t(rub, penny);
+    rub = temp/100;
+    penny = temp%100;
+    return t;
 }
 
 istream&operator>>(istream&in, Money&t) {
