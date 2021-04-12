@@ -21,10 +21,8 @@ int main() {
                 int n;
                 cin >> n;
                 s.push(n);
-
                 cout << "Для продолжения нажмите любую клавишу.." << endl;
                 cin >> choice;
-
                 break;
             }
             case 2: {

@@ -8,6 +8,9 @@
 #include <iostream>
 using namespace std;
 
+/*
+ * Элементы стека
+ */
 template <class T>
 class Node {
 public:
@@ -15,14 +18,13 @@ public:
     Node<T>* next;
 };
 
+/* Стек */
 template <class T>
 class Stack {
 private:
     Node<T>* top;
 public:
-    Stack() {
-        top = nullptr;
-    }
+    Stack() { top = nullptr; }
     bool isEmpty();
     T Top();
     void push(const T& val);
