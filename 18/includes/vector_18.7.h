@@ -7,7 +7,17 @@
 
 #include <iostream>
 #include <string>
+
 using namespace std;
+
+template<class T>
+class Vector;
+
+template<class T>
+ostream& operator<< (ostream& out, const Vector<T>& a);
+
+template<class T>
+istream& operator>> (istream& in, Vector<T>& a);
 
 template<class T>
 class Vector {
@@ -29,8 +39,8 @@ public:
     Vector operator+(const T k);
     // Вернуть длину вектора
     int operator()();
-    friend ostream& operator<< (ostream& out, const Vector<T>& a);
-    friend istream& operator>> (istream& in, Vector<T>& a);
+    friend ostream& operator<< <T>(ostream& out, const Vector<T>& a);
+    friend istream& operator>> <T>(istream& in, Vector<T>& a);
 };
 
 template<class T>
