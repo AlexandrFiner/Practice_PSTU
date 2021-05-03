@@ -41,6 +41,7 @@ public:
     Money& operator--();
     Money operator--(int); // Постфиксная операция
     Money operator+(const Money&);
+    Money operator-(Money k);
     /// Глобальные функции ввода-вывода
     friend istream& operator>>(istream&in, Money&t);
     friend ostream& operator<<(ostream&out, const Money&t);
@@ -94,6 +95,14 @@ Money Money::operator+(const Money &t) {
     p.rub = temp/100;
     p.penny = temp%100;
     return p;
+}
+
+Money Money::operator-(Money k) {
+    int t = rub * 100 + penny;
+    int kt = k.rub * 100 + k.penny;
+    t -= kt;
+    Money temp(t / 100, t % 100);
+    return temp;
 }
 
 // --VALUE

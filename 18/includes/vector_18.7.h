@@ -37,6 +37,8 @@ public:
     T&operator[](int index);
     // Операция добавления константы
     Vector operator+(const T k);
+    // Операция вычитания константы
+    Vector operator-(const T k);
     // Вернуть длину вектора
     int operator()();
     friend ostream& operator<< <T>(ostream& out, const Vector<T>& a);
@@ -70,7 +72,7 @@ Vector<T> &Vector<T>::operator=(const Vector<T>&a) {
     if(this == &a) return *this;
     size = a.size;
     if(data != 0) delete[]data; // Если не пуст, то очистим
-    data = new int[size];
+    data = new T[size];
     for(int i = 0; i < size; i++)
         data[i] = a.data[i];
     return *this;
@@ -80,7 +82,7 @@ template<class T>
 T&Vector<T>::operator[](int index) {
     if(index<size) return data[index];
     cerr << "\nError! Index > size";
-    // return 0;
+    // return;
 }
 
 template<class T>
@@ -91,6 +93,15 @@ Vector<T> Vector<T>::operator+(const T k) {
     }
     return temp;
 }
+
+template <class T>
+Vector<T> Vector<T>::operator-(const T k) {
+    Vector<T> temp(size, k);
+    for (int i = 0; i < size; ++i)
+        temp.data[i] = data[i] - k;
+    return temp;
+}
+
 
 template<class T>
 int Vector<T>::operator()() {
