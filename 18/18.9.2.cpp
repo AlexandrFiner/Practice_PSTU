@@ -1,4 +1,30 @@
-//
-// Created by alexandr on 12.04.2021.
-//
+#include "includes/18.9.2/vector.h"
+#include <iostream>
 
+using namespace std;
+
+int main()
+{
+    try
+    {
+        Plenty x(2);
+        Plenty y;
+        cout << x;
+        cout << "Nomer?";
+        int i;
+        cin >> i;
+        cout << x[i] << endl;
+        y = x + 3;
+        cout << y;
+        --x;
+        cout << x;
+        --x;
+        cout << x;
+        --x;
+    }
+    catch (error e)
+    {
+        e.what();
+    }
+    return 0;
+}

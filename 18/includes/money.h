@@ -42,6 +42,8 @@ public:
     Money operator--(int); // Постфиксная операция
     Money operator+(const Money&);
     Money operator-(Money k);
+    bool operator >(const Money&);
+    bool operator <(const Money&);
     /// Глобальные функции ввода-вывода
     friend istream& operator>>(istream&in, Money&t);
     friend ostream& operator<<(ostream&out, const Money&t);
@@ -126,6 +128,19 @@ Money Money::operator--(int) {
     rub = temp/100;
     penny = temp%100;
     return t;
+}
+
+
+bool Money::operator >(const Money&t) {
+    if(rub > t.rub) return true;
+    if(rub == t.rub && penny > t.penny) return true;
+    return false;
+}
+
+bool Money::operator <(const Money&t) {
+    if(rub < t.rub) return true;
+    if(rub == t.rub && penny < t.penny) return true;
+    return false;
 }
 
 istream&operator>>(istream&in, Money&t) {

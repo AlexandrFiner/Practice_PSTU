@@ -31,6 +31,8 @@ public:
     Vector(const Vector<T>&a);
     // деструктор
     ~Vector();
+    // Печать
+    void Print();
     // Присваивание
     Vector &operator=(const Vector<T>&a);
     // Доступ по индексу
